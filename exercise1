@@ -2,3 +2,19 @@ mkdir RecapExercise
 cd RecapExercise
 git init
 (git config : needed only once)
+(connection SSH with key : needed only once)
+
+# On github website : create new repository (recap Exercises)
+
+# On command line in VB:
+# link present directory to remote repository
+git remote add origin git@github.com:erikfransen1/recap-exercises.git
+
+# can check connection
+git remote -v
+
+# rename master to Main
+git branch -M main
+
+# push origin branck to main on GH
+git push origin main
