@@ -18,3 +18,6 @@ git branch -M main
 
 # push origin branck to main on GH
 git push origin main
+
+# pushing didn't work - suggested:
+git push --set-upstream origin main
