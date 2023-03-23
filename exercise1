@@ -1,0 +1,3 @@
+mkdir RecapExercise
+cd RecapExercise
+git init
