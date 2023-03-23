@@ -1,0 +1,28 @@
+# exercise patient medication form
+
+UNF:
+db(patientNo,FullName,WardNo,WardName,BedNr,[DrugNo],[DrugName],[Description],[Dosage],[MethodAdmin,[UNitsperDay],[startDay],[FinishDay])
+
+1NF
+# PK : patientNp*drugNumber
+# repeated groups
+
+db(*patientNo*,FullName,*WardNo*,WardName,BedNr,*DrugNo*,DrugName,Description,Dosage,MethodAdmin,UnitsperDay,startDay,FinishDay)
+
+2NF
+partial dependency : 
+	- drug name, descr,dosag, methAdmin = only dependent on drug No
+	- ward name = only dependent on wardNo
+	- fullName : only dependent on patientNo
+
+drug(*drugNo*,drugName,description,dosage, methodadmin)
+patient(*patientNo*,FullName,wardNo,wardName,bedNo)
+dosis(*patientNo*,*drugNo*,*startDay*,unitsPerDay,FinishDay)
+
+3NF
+dependency between non-keys : wardname and wardNo
+
+ward(*wardNo*,wardName)
+drug(*drugNo*,drugName,description,dosage, methodadmin)
+patient(*patientNo*,FullName,wardNo,bedNo)
+dosis(*patientNo*,*drugNo*,*startDay*,unitsPerDay,FinishDay)
