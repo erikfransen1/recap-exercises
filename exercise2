@@ -1,0 +1,23 @@
+# file is in NF1
+# PK : patientName*appointment
+
+# NF2
+patientNo : depends on patientName only, not on appoint
+create separate table patientName-patientNo
+
+patient(patientName,*patientNo*)
+visit(*patientNo*,*appointment*,staffNo,dentistName,time,surgeryNo)
+
+#NF3
+dependence between non-key:
+staffNo - dentistName
+
+dentist(*staffNo*,dentistName)
+visit(*patientNo*,*appointment*,staffNo,time,surgeryNo)
+patient(patientName,*patientNo*)
+
+#BCNF
+each determinant can be pk
+none of the non-PK are determinant
+BCNF=3NF
+
