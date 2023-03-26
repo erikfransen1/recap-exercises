@@ -122,3 +122,55 @@ SELECT stdFirstName,stdLastName,stdCity,stdState FROM student WHERE stdClass='JR
 | CANDY        | KENDALL     | TACOMA  | WA       |
 | MARIAH       | DODGE       | SEATTLE | WA       |
 +--------------+-------------+---------+----------+
+
+SELECT unique(concat(FacCity,', ',FacState)) FROM faculty;
++---------------------------------+
+| (concat(FacCity,', ',FacState)) |
++---------------------------------+
+| SEATTLE, WA                     |
+| BOTHELL, WA                     |
+| BELLEVUE, WA                    |
++---------------------------------+
+
+
+SELECT stdFirstName,stdLastName,offering.OfferNo,stdGPA FROM offering JOIN enrollment ON offering.OfferNo=enrollment.OfferNo JOIN student ON student.stdSSN=enrollment.StdSSN  WHERE stdGPA>=3.5;
++--------------+-------------+---------+--------+
+| stdFirstName | stdLastName | OfferNo | stdGPA |
++--------------+-------------+---------+--------+
+| CANDY        | KENDALL     |    1234 |   3.50 |
+| MARIAH       | DODGE       |    1234 |   3.60 |
+| CRISTOPHER   | COLAN       |    4321 |   4.00 |
+| WILLIAM      | PILGRIM     |    4321 |   3.80 |
+| CANDY        | KENDALL     |    5678 |   3.50 |
+| MARIAH       | DODGE       |    5678 |   3.60 |
+| WILLIAM      | PILGRIM     |    5679 |   3.80 |
+| CANDY        | KENDALL     |    6666 |   3.50 |
+| MARIAH       | DODGE       |    6666 |   3.60 |
+| CRISTOPHER   | COLAN       |    7777 |   4.00 |
+| WILLIAM      | PILGRIM     |    7777 |   3.80 |
+| CANDY        | KENDALL     |    9876 |   3.50 |
+| MARIAH       | DODGE       |    9876 |   3.60 |
+| WILLIAM      | PILGRIM     |    9876 |   3.80 |
++--------------+-------------+---------+--------+
+
+SELECT distinct stdFirstName,stdLastName FROM student JOIN enrollment ON student.stdSSN=enrollment.StdSSN WHERE EnrGrade>=3.5;
++--------------+-------------+
+| stdFirstName | stdLastName |
++--------------+-------------+
+| CANDY        | KENDALL     |
+| MARIAH       | DODGE       |
+| HOMER        | WELLS       |
+| ROBERTO      | MORALES     |
+| BOB          | NORBERT     |
+| LUKE         | BRAZZI      |
+| WILLIAM      | PILGRIM     |
++--------------+-------------+
+
+
+SELECT offering.OfferNo,course.CourseNo,offering.OffLocation,offering.OffDays,faculty.FacLastName FROM student JOIN enrollment ON student.stdSSN=enrollment.StdSSN JOIN offering ON offering.OfferNo=enrollment.OfferNo JOIN course ON course.CourseNO=offering.CourseNo JOIN faculty ON faculty.facSSN=offering.facSSN WHERE stdLastName='NORBERT' AND OffTerm='SPRING' AND OffYear='2006';
++---------+----------+-------------+---------+-------------+
+| OfferNo | CourseNo | OffLocation | OffDays | FacLastName |
++---------+----------+-------------+---------+-------------+
+|    5679 | IS480    | BLM412      | TTH     | COLAN       |
+|    9876 | IS460    | BLM307      | TTH     | FIBON       |
++---------+----------+-------------+---------+-------------+
