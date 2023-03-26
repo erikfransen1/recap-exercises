@@ -1,0 +1,124 @@
+# create db + permisions
+sudo mariadb
+CREATE DATABASE college;
+GRANT ALL ON college.* TO 'erik'@'localhost';
+exit mariadb
+mysql college < college.sql
+login to mariadb as regular user
+SHOW databases;
+USE college;
+SHOW tables;
+
+SELECT concat(stdFirstName,' ',stdLastName) AS Name,stdCity,stdGPA FROM student WHERE stdGPA>=3.7 ;
++------------------+---------+--------+
+| Name             | stdCity | stdGPA |
++------------------+---------+--------+
+| CRISTOPHER COLAN | SEATTLE |   4.00 |
+| WILLIAM PILGRIM  | BOTHELL |   3.80 |
++------------------+---------+--------+
+
+SELECT FacFirstName,FacLastName,FacHireDate FROM faculty WHERE YEAR(FacHireDate) BETWEEN 1999 AND 2000;
++--------------+-------------+-------------+
+| FacFirstName | FacLastName | FacHireDate |
++--------------+-------------+-------------+
+| CRISTOPHER   | COLAN       | 1999-03-01  |
+| JULIA        | MILLS       | 2000-03-15  |
++--------------+-------------+-------------+
+
+SELECT OfferNo,CourseNo,FacSSN FROM offering WHERE (offTerm='FALL' AND OffYear=2005) OR (offTerm='WINTER' AND OffYear=2006);
++---------+----------+-------------+
+| OfferNo | CourseNo | FacSSN      |
++---------+----------+-------------+
+|    1234 | IS320    | 098-76-5432 |
+|    4321 | IS320    | 098-76-5432 |
+|    4444 | IS320    | 543-21-0987 |
+|    5555 | FIN300   | 765-43-2109 |
+|    5678 | IS480    | 987-65-4321 |
+|    6666 | FIN450   | 987-65-4321 |
++---------+----------+-------------+
+
+SELECT OfferNo,course.CourseNo,OffDays,OffTime FROM offering JOIN course ON course.CourseNo=offering.CourseNo WHERE (offTerm='SPRING' AND OffYear=2006) AND (crsDesc RLIKE 'PROGRAMMING' OR crsDesc RLIKE 'DATABASE');
++---------+----------+---------+----------+
+| OfferNo | CourseNo | OffDays | OffTime  |
++---------+----------+---------+----------+
+|    3333 | IS320    | MW      | 08:30:00 |
+|    5679 | IS480    | TTH     | 15:30:00 |
++---------+----------+---------+----------+
+
+
+SELECT OfferNo,course.CourseNo,FacFirstName,FacLastName FROM faculty JOIN offering ON faculty.FacSSN=offering.FacSSN JOIN course ON course.CourseNo=offering.CourseNo WHERE (offTerm='FALL' AND OffYear=2005) AND FacRank='ASST' AND course.CourseNo RLIKE "^IS";
++---------+----------+--------------+-------------+
+| OfferNo | CourseNo | FacFirstName | FacLastName |
++---------+----------+--------------+-------------+
+|    1234 | IS320    | LEONARD      | VINCE       |
+|    4321 | IS320    | LEONARD      | VINCE       |
++---------+----------+--------------+-------------+
+
+SELECT stdMajor,avg(stdGPA) FROM student GROUP BY stdMajor;
++----------+-------------+
+| stdMajor | avg(stdGPA) |
++----------+-------------+
+| ACCT     |    3.400000 |
+| FIN      |    2.800000 |
+| IS       |    3.233333 |
++----------+-------------+
+
+SELECT OffYear,count(distinct(CourseNo)) AS nCourses ,count(distinct(OfferNo)) AS nOfferings FROM offering GROUP BY OffYear;
++---------+----------+------------+
+| OffYear | nCourses | nOfferings |
++---------+----------+------------+
+|    2005 |        2 |          3 |
+|    2006 |        6 |         10 |
++---------+----------+------------+
+
+SELECT stdMajor,avg(stdGPA) AS avgGPA FROM student WHERE stdClass='JR' OR stdClass='SR' GROUP BY stdMajor;
++----------+----------+
+| stdMajor | avgGPA   |
++----------+----------+
+| ACCT     | 3.500000 |
+| FIN      | 2.800000 |
+| IS       | 3.150000 |
++----------+----------+
+3 rows in set (0.000 sec)
+
+MariaDB [college]> SELECT stdMajor,avg(stdGPA) AS avgGPA FROM student WHERE stdClass='JR' OR stdClass='SR' GROUP BY stdMajor HAVING avgGPA>3.1;
++----------+----------+
+| stdMajor | avgGPA   |
++----------+----------+
+| ACCT     | 3.500000 |
+| IS       | 3.150000 |
++----------+----------+
+
+SELECT stdMajor,stdClass,max(stdGPA) AS maxGPA,min(stdGPA) AS minGPA FROM student GROUP BY stdMajor,stdClass;
++----------+----------+--------+--------+
+| stdMajor | stdClass | maxGPA | minGPA |
++----------+----------+--------+--------+
+| ACCT     | JR       |   3.50 |   3.50 |
+| ACCT     | SO       |   3.30 |   3.30 |
+| FIN      | JR       |   2.70 |   2.50 |
+| FIN      | SR       |   3.20 |   3.20 |
+| IS       | FR       |   3.00 |   3.00 |
+| IS       | JR       |   3.60 |   3.60 |
+| IS       | SO       |   3.80 |   3.80 |
+| IS       | SR       |   4.00 |   2.20 |
++----------+----------+--------+--------+
+
+SELECT crsDesc,count(offering.OfferNo) FROM course JOIN offering ON offering.CourseNo=course.CourseNo WHERE course.CourseNo RLIKE "^IS" GROUP BY crsDesc;
++--------------------------------------+-------------------------+
+| crsDesc                              | count(offering.OfferNo) |
++--------------------------------------+-------------------------+
+| FUNDAMENTALS OF BUSINESS PROGRAMMING |                       6 |
+| FUNDAMENTALS OF DATABASE MANAGEMENT  |                       2 |
+| SYSTEMS ANALYSIS                     |                       2 |
++--------------------------------------+-------------------------+
+
+
+SELECT stdFirstName,stdLastName,stdCity,stdState FROM student WHERE stdClass='JR' ORDER BY stdGPA;
++--------------+-------------+---------+----------+
+| stdFirstName | stdLastName | stdCity | stdState |
++--------------+-------------+---------+----------+
+| ROBERTO      | MORALES     | SEATTLE | WA       |
+| BOB          | NORBERT     | BOTHELL | WA       |
+| CANDY        | KENDALL     | TACOMA  | WA       |
+| MARIAH       | DODGE       | SEATTLE | WA       |
++--------------+-------------+---------+----------+
