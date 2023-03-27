@@ -1,0 +1,17 @@
+curl 'https://grch37.rest.ensembl.org/sequence/region/human/13:32889000..32891000:1?mask=soft' -H 'Content-type:text/x-fasta'
+curl 'https://grch37.rest.ensembl.org/sequence/region/human/13:32889000..32891000:1?mask=hard' -H 'Content-type:text/x-fasta'
+
+curl 'https://grch37.rest.ensembl.org/lookup/symbol/homo_sapiens/CCR5?expand=1' -H 'Content-type:application/json'
+
+curl 'https://grch37.rest.ensembl.org/homology/symbol/pan_troglodytes/CCR5?' -H 'Content-type:application/json'
+
+curl -v 'https://rest.ensembl.org/homology/symbol/human/CCR5?type=orthologues;target_species=pan_troglodytes' -H 'Content-type:application/json'
+
+curl 'https://rest.ensembl.org/sequence/id/ENST00000001146?' -H 'Content-type:text/x-fasta'
+
+curl 'https://rest.ensembl.org/sequence/id' -H 'Content-type:application/json' \
+-H 'Accept:application/json' -X POST -d '{ "ids" : ["ENSG00000002587", "ENSG00000003056" ] }'
+
+curl 'https://rest.ensembl.org/sequence/region/human/7:35182..35431:1?' -H 'Content-type:text/plain'
+
+
