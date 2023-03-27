@@ -1,0 +1,29 @@
+# import database restaurant
+mongoimport -d restaurant restaurants.json
+show dbs
+use restaurant
+
+db.restaurants.find({},{restaurant_id:1,name:1,borough:1,cuisine:1,_id:0})
+
+db.restaurants.find({borough:'Bronx'},{restaurant_id:1,name:1,borough:1,cuisine:1,_id:0}).limit(5).skip(5)
+
+db.restaurants.find({"grades.score":{$gt:90}})
+
+db.restaurants.find({cuisine:{$ne:'American'},"grades.score":{$gt:70},"address.coord.0":{$lt:-65.754168}})
+
+db.restaurants.find({cuisine:{$in:['American','Chinese']},borough:'Bronx'})
+
+db.restaurants.find({borough:{$nin:['Staten Island','Queens','Bronx','Brooklyn']}},{restaurant_id:1,_id:0,borough:1,cuisine:1,name:1})
+
+db.restaurants.find({"grades.score":{$lte:10}},{restaurant_id:1,_id:0,borough:1,cuisine:1,name:1,"grades.score":1})
+# includes restaurants where at least one of the grades is not above 10
+
+db.restaurants.find({"grades.score":{$not:{$gt:10}}},{restaurant_id:1,_id:0,borough:1,cuisine:1,name:1,"grades.score":1})
+# includes restaurants where none of the grades is above 10
+
+db.restaurants.find({grades:{$elemMatch:{date:ISODate("2014-08-11T00:00:00Z"),grade:"A",score:11}}})
+
+db.restaurants.find({},{restaurant_id:1,name:1,_id:0,cuisine:1,borough:1}).sort({cuisine:1,borough:-1})
+
+db.restaurants.find({"address.street":{$exists:0}})
+
